@@ -11,7 +11,7 @@ admins can review daily/weekly reports and correct daily punch times._
 - **Admin login:** `Admin1@gmail.com` / `admin1234`
 - **Employee login:** `emp@gmail.com` / `emp123`
 
-> **Note:** The compute backend runs on Render's free tier, which spins down after ~15 min idle — the **first** punch-out after a period of inactivity may take up to ~50s while the server wakes. Subsequent requests are fast. Also, if the dashboard data ever looks stuck, disable ad/privacy blockers or use an incognito window (aggressive blockers can block Firestore requests).
+> **Note:** The compute backend runs on Render's free tier, which spins down after ~15 min idle — the first punch-out after a period of inactivity may take up to ~50s while the server wakes. Subsequent requests are fast. Also, if the dashboard data ever looks stuck, disable ad/privacy blockers or use an incognito window.
 
 ## Tech Stack
 
@@ -63,10 +63,19 @@ The server pins its timezone to `Asia/Manila` so schedule and night-diff windows
 
 ## Key Decisions
 
-- Metrics are computed **on punch-out** and stored in `dailySummary` (read-optimized reporting).
+- Metrics are computed on punch out and stored in `dailySummary`.
 - `dailySummary` uses a composite doc ID (`{uid}_{date}`) for direct lookups without queries.
-- Access control is enforced by Firestore Security Rules, not just the UI.
-- One punch cycle per day is enforced by button gating — the punch button disables after a complete in/out pair, so an employee can't log duplicate cycles.
+- Access control was done by Firestore Security Rules and not just by UI.
+- One punch cycle per day is enforced by button gating which disables the button after 1 full cycle of punch in and punch out has been completed for that day in order to prevent users from being able to duplicate cycles.
+
+## Security
+
+Role-based access is enforced server-side via [`firestore.rules`](firestore.rules), not just in the UI:
+
+- **Employees** can read and write only their own `attendance` and `dailySummary` documents.
+- **Admins** can read every employee's data and edit punches.
+- Self-registration is locked to `role: "employee"`, so a user can't grant themselves admin access.
+- Punch deletes are disabled; punch-time edits are admin-only.
 
 ## Known Limitations
 
