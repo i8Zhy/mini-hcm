@@ -24,10 +24,6 @@ export const Dashboard = ({ user, onLogout }) => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true)
 
-  // TODO (data-fetching, not layout): populate these from dailySummary.js
-  // — getDailySummary(user.uid, todayDateString) for todaySummary
-  // — getDailySummaryHistory(user.uid) for 
-
   const refreshDailySummary = async () => {
     const today = toDateString(new Date());
     await Promise.all([

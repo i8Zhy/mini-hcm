@@ -129,7 +129,6 @@ export async function registerUser({ name, email, password, role, timezone, sche
       timezone,
       schedule,
     });
-    console.log("Registered successfully");
   } catch (err) {
     console.error(err);
     throw err;
@@ -142,7 +141,6 @@ export async function registerUser({ name, email, password, role, timezone, sche
 export async function loginUser({ email, password }) {
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    console.log("Logged in successfully");
   } catch (err) {
     console.error(err);
     throw err;
@@ -155,7 +153,6 @@ export async function loginUser({ email, password }) {
 export async function logoutUser() {
   try {
     await signOut(auth);
-    console.log("Logged out successfully");
   } catch (err) {
     console.error(err);
     throw err;

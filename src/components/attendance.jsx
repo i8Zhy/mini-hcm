@@ -45,7 +45,7 @@ export async function recordPunch(uid, type) {
             timestamp: serverTimestamp(),
         });
     }catch(err){
-        console.log(err);
+        console.error(err);
         throw err;
     }
 }
