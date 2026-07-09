@@ -6,9 +6,12 @@ admins can review daily/weekly reports and correct daily punch times._
 
 ## Live Demo
 
-- **URL:** 
-- **Employee login:** 
-- **Admin login:** 
+**https://mini-hcm-28683.web.app**
+
+- **Admin login:** `Admin1@gmail.com` / `admin1234`
+- **Employee login:** `emp@gmail.com` / `emp123`
+
+> **Note:** The compute backend runs on Render's free tier, which spins down after ~15 min idle — the **first** punch-out after a period of inactivity may take up to ~50s while the server wakes. Subsequent requests are fast. Also, if the dashboard data ever looks stuck, disable ad/privacy blockers or use an incognito window (aggressive blockers can block Firestore requests).
 
 ## Tech Stack
 
@@ -59,9 +62,6 @@ All time math runs on the **Express backend**, in one pure function — [`server
 The server pins its timezone to `Asia/Manila` so schedule and night-diff windows are interpreted consistently regardless of where it's hosted. Keeping the function pure (no I/O) made it straightforward to hand-verify against known cases.
 
 ## Key Decisions
-
-<!-- TODO: this is where you explain choices in your own words — a few bullets.
-Some you might mention: -->
 
 - Metrics are computed **on punch-out** and stored in `dailySummary` (read-optimized reporting).
 - `dailySummary` uses a composite doc ID (`{uid}_{date}`) for direct lookups without queries.
